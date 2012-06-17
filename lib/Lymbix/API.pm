@@ -1,8 +1,15 @@
 package Lymbix::API;
 
-use 5.006;
 use strict;
 use warnings;
+our $VERSION = '0.01';
+$VERSION = eval $VERSION;
+
+use Carp;
+use Try::Tiny;
+use Mouse;
+use LWP::UserAgent;
+use HTTP::Request;
 
 =head1 NAME
 
@@ -13,9 +20,6 @@ Lymbix::API - The great new Lymbix::API!
 Version 0.01
 
 =cut
-
-our $VERSION = '0.01';
-
 
 =head1 SYNOPSIS
 
@@ -35,11 +39,37 @@ if you don't export anything, such as for a purely object-oriented module.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 function1
-
 =cut
 
-sub function1 {
+has api_url => (is => 'rw', isa => 'Str', required => 1, default => 'http://api.lymbix.com/tonalize_detailed');
+has auth_key => (is => 'rw', isa => 'Str', required => 1);
+has accept_type => (is => 'rw', isa => 'Str', default => 'application/json');
+has api_version => (is => 'rw', isa => 'Str', default => '2.2');
+has return_fields => (is => 'rw', isa => 'Str');
+has article_reference_id => (is => 'rw', isa => 'Str');
+
+has ua => (is => 'rw', isa => 'LWP::UserAgent');
+has req => (is => 'rw', isa => 'HTTP::Request');
+
+around BUILDARGS => sub {
+    my $orig = shift;
+    my $class = shift;
+
+    if (@_ == 1 && !ref $_[0]) {
+        return $class->$orig( auth_key => $_[0] );
+    } else {
+        return $class->$orig(@_);
+    }
+};
+
+sub BUILD {
+    my $self = shift;
+
+    $self->ua(LWP::UserAgent->new);
+    $self->req(HTTP::Request->new(POST => $self->api_url));
+    $self->req->header(AUTHENTICATION => $self->auth_key);
+    $self->req->header(ACCEPT => $self->accept_type);
+    $self->req->header(VERSION => $self->api_version);
 }
 
 =head2 function2
@@ -108,4 +138,5 @@ See http://dev.perl.org/licenses/ for more information.
 
 =cut
 
-1; # End of Lymbix::API
+__PACKAGE__->meta->make_immutable();
+1;
