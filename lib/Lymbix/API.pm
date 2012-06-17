@@ -43,7 +43,15 @@ if you don't export anything, such as for a purely object-oriented module.
 
 has api_url => (is => 'rw', isa => 'Str', required => 1, default => 'http://api.lymbix.com/tonalize_detailed');
 has auth_key => (is => 'rw', isa => 'Str', required => 1);
-has accept_type => (is => 'rw', isa => 'Str', default => 'application/json');
+has accept_type => (
+    is => 'rw',
+    isa => 'Str',
+    default => 'application/json',
+    trigger => sub {
+        my $value = pop;
+        die "Invalid value for accept_type [$value]" unless grep($value eq $_,  qw(application/json application/xml));
+    },
+);
 has api_version => (is => 'rw', isa => 'Str', default => '2.2');
 has return_fields => (is => 'rw', isa => 'Str');
 has article_reference_id => (is => 'rw', isa => 'Str');

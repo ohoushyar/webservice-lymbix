@@ -36,16 +36,8 @@ subtest 'Init sanity checks' => sub {
     dies_ok {
         Lymbix::API->new(
             auth_key => $auth_key,
-            accept_type_invalid => $accept_type,
-            article_reference_id => $article_reference_id
-        )} 'Expected to die on invalid params';
-    dies_ok {
-        Lymbix::API->new(
-            auth_key => $auth_key,
-            accept_type => $accept_type,
-            article_reference_id_invalid => $article_reference_id
-        )} 'Expected to die on invalid params';
+            accept_type => 'llll'
+        )} 'Expect to die on invalid value for accept_type';
 };
-
 
 done_testing();
