@@ -7,13 +7,15 @@ $VERSION = eval $VERSION;
 
 use Carp;
 use Try::Tiny;
+use Encode;
 use Mouse;
+use Mouse::Util::TypeConstraints;
 use LWP::UserAgent;
 use HTTP::Request;
 
 =head1 NAME
 
-Lymbix::API - The great new Lymbix::API!
+Lymbix::API - API wrapper of Lymbix.
 
 =head1 VERSION
 
@@ -23,41 +25,47 @@ Version 0.01
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+An API wrapper of Lymbix. See L<http://lymbix.com> for more details.
 
 Perhaps a little code snippet.
 
     use Lymbix::API;
 
-    my $foo = Lymbix::API->new();
+    my $auth_key = '<YOURAUTHKEY>';
+    my $lymbix = Lymbix::API->new($auth_key);
+    print $lymbix->tonalize("if you had to launch your business in two weeks, what would you cut")
     ...
 
-=head1 EXPORT
+=head1 ATTRIBUTES
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+=head2 api_url
 
-=head1 SUBROUTINES/METHODS
+=head2 auth_key
+
+=head2 accept_type
+
+=head2 api_version
+
+
 
 =cut
 
-has api_url => (is => 'rw', isa => 'Str', required => 1, default => 'http://api.lymbix.com/tonalize_detailed');
+has api_url => (is => 'rw', isa => 'Str', required => 1, default => 'http://api.lymbix.com');
 has auth_key => (is => 'rw', isa => 'Str', required => 1);
+
+enum 'AcceptType' => qw(application/json application/xml);
 has accept_type => (
     is => 'rw',
-    isa => 'Str',
+    isa => 'AcceptType',
     default => 'application/json',
-    trigger => sub {
-        my $value = pop;
-        die "Invalid value for accept_type [$value]" unless grep($value eq $_,  qw(application/json application/xml));
-    },
 );
+
 has api_version => (is => 'rw', isa => 'Str', default => '2.2');
-has return_fields => (is => 'rw', isa => 'Str');
-has article_reference_id => (is => 'rw', isa => 'Str');
 
 has ua => (is => 'rw', isa => 'LWP::UserAgent');
 has req => (is => 'rw', isa => 'HTTP::Request');
+
+has tonalize_uri => (is => 'ro', default => '/tonalize');
 
 around BUILDARGS => sub {
     my $orig = shift;
@@ -74,18 +82,57 @@ sub BUILD {
     my $self = shift;
 
     $self->ua(LWP::UserAgent->new);
-    $self->req(HTTP::Request->new(POST => $self->api_url));
+    $self->req(HTTP::Request->new('POST'));
     $self->req->header(AUTHENTICATION => $self->auth_key);
     $self->req->header(ACCEPT => $self->accept_type);
     $self->req->header(VERSION => $self->api_version);
 }
 
-=head2 function2
+=head1 METHODS
+
+=head2 tonalize(article, [return_fields, accept_type, article_reference_id])
+
+The tonalize method provides article-level Lymbix sentiment data for a single article.
 
 =cut
 
-sub function2 {
+sub tonalize {
+    my $self = shift;
+
+    my $article = shift;
+    my $return_fields = shift || '';
+    my $reference_id = shift || '';
+
+    $self->req->uri($self->api_url.$self->tonalize_uri);
+
+    my $content = qq(article=$article);
+    $content .= qq(&return_fields=[ $return_fields ]);
+    $content .= qq(&reference_id=$reference_id);
+    $self->req->content( encode("UTF8", $content) );
+
+    return $self->_request;
 }
+
+sub _request {
+    my $self = shift;
+
+    my $res = $self->ua->request($self->req);
+    if ($res->is_success) {
+        return $res->content;
+    } else {
+        return $res->status_line;
+    }
+}
+
+=head2 PARAMS
+
+=head3 article (string)
+
+=head3 return_fields (csv)
+
+=head3 accept_type (default:application/json application/xml)
+
+=head3 article_reference_id
 
 =head1 AUTHOR
 
