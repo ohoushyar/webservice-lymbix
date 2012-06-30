@@ -13,7 +13,12 @@ WriteMakefile(
       : ()),
     PL_FILES            => {},
     PREREQ_PM => {
-        'Test::More' => 0,
+        'Carp' => 0,
+        'Encode' => 0,
+        'Mouse' => 0,
+        'LWP::UserAgent' => 6,
+        'HTTP::Request' => 6,
+        'Test::Most' => 0.25,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Lymbix-API-*' },
