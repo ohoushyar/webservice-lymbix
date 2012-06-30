@@ -2,11 +2,11 @@ package Lymbix::API;
 
 use strict;
 use warnings;
+
 our $VERSION = '0.01';
 $VERSION = eval $VERSION;
 
 use Carp;
-use Try::Tiny;
 use Encode;
 use Mouse;
 use Mouse::Util::TypeConstraints;
@@ -46,8 +46,6 @@ Perhaps a little code snippet.
 
 =head2 api_version
 
-
-
 =cut
 
 has api_url => (is => 'rw', isa => 'Str', required => 1, default => 'http://api.lymbix.com');
@@ -66,6 +64,9 @@ has ua => (is => 'rw', isa => 'LWP::UserAgent');
 has req => (is => 'rw', isa => 'HTTP::Request');
 
 has tonalize_uri => (is => 'ro', default => '/tonalize');
+has tonalize_detailed_uri => (is => 'ro', default => '/tonalize_detailed');
+has tonalize_multiple_uri => (is => 'ro', default => '/tonalize_multiple');
+has flag_response_uri => (is => 'ro', default => '/flag_response');
 
 around BUILDARGS => sub {
     my $orig = shift;
@@ -100,28 +101,34 @@ sub tonalize {
     my $self = shift;
 
     my $article = shift;
-    my $return_fields = shift || '';
+    my $return_fields = shift || ' '; # CSV format
     my $reference_id = shift || '';
 
-    $self->req->uri($self->api_url.$self->tonalize_uri);
-
     my $content = qq(article=$article);
-    $content .= qq(&return_fields=[ $return_fields ]);
+    $content .= qq(&return_fields=[$return_fields]);
     $content .= qq(&reference_id=$reference_id);
-    $self->req->content( encode("UTF8", $content) );
 
-    return $self->_request;
+    return $self->_request($content, $self->tonalize_uri);
 }
 
-sub _request {
+=head2 tonalize_detailed(article, [return_fields, accept_type, article_reference_id])
+
+The tonalize_detailed method provides article-level Lymbix sentiment data along with a sentence by sentence sentiment data for a single article.
+
+=cut
+
+sub tonalize_detailed {
     my $self = shift;
 
-    my $res = $self->ua->request($self->req);
-    if ($res->is_success) {
-        return $res->content;
-    } else {
-        return $res->status_line;
-    }
+    my $article = shift;
+    my $return_fields = shift || ' '; # CSV format
+    my $reference_id = shift || '';
+
+    my $content = qq(article=$article);
+    $content .= qq(&return_fields=[$return_fields]);
+    $content .= qq(&reference_id=$reference_id);
+
+    return $self->_request($content, $self->tonalize_detailed_uri);
 }
 
 =head2 PARAMS
@@ -130,9 +137,71 @@ sub _request {
 
 =head3 return_fields (csv)
 
-=head3 accept_type (default:application/json application/xml)
+=head3 article_reference_id (string)
 
-=head3 article_reference_id
+=head2 tonalize_multiple(articles, [return_fields, article_reference_ids])
+
+The tonalize_multiple method provides article-level Lymbix sentiment data for multiple articles.
+
+articles (csv), return_fields (csv), article_reference_ids (csv)
+
+=cut
+
+sub tonalize_multiple {
+    my $self = shift;
+
+    my $articles = shift;
+    my $return_fields = shift || ' '; # CSV format
+    my $reference_ids = shift || ' '; # CSV format
+
+    my $content = qq(articles=[$articles]);
+    $content .= qq(&return_fields=[$return_fields]);
+    $content .= qq(&reference_ids=[$reference_ids]);
+
+    return $self->_request($content, $self->tonalize_multiple_uri);
+}
+
+=head2 flag_response (reference_id, phrase, api_method_requested, [api_version, callback_url])
+
+Flags a phrase to be re-evaluated.
+
+=cut
+
+sub flag_response {
+    my $self = shift;
+
+    my $reference_id = shift;# || croak 'Required to pass reference_id';
+    my $phrase = shift;
+    my $api_method_requested = shift;
+    my $api_version = shift || $self->api_version;
+    my $callback_url = shift || '';
+
+    croak "Invalid api_method_requested [$api_method_requested]" unless grep(/^$api_method_requested$/, qw(tonalize tonalize_detailed tonalize_multiple));
+
+    my $content = qq(phrase=$phrase);
+    $content .= qq(&reference_id=$reference_id);
+    $content .= qq(&api_method_requested=$api_method_requested);
+    $content .= qq(&api_version=$api_version);
+    $content .= qq(&callback_url=$callback_url);
+
+    return $self->_request($content, $self->flag_response_uri);
+}
+
+sub _request {
+    my $self = shift;
+    my $content = shift;
+    my $uri = shift;
+
+    $self->req->uri($self->api_url.$uri);
+    $self->req->content( encode("UTF8", $content) );
+
+    my $res = $self->ua->request($self->req);
+    if ($res->is_success) {
+        return $res->content;
+    } else {
+        return $res->status_line;
+    }
+}
 
 =head1 AUTHOR
 

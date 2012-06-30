@@ -2,10 +2,10 @@ use Test::Most 0.25;
 
 use Lymbix::API;
 
-my $auth_key = 'e3b565ab7ab7450426adc55dc61f08507805e295';
+my $auth_key = $ENV{LYMBIX_AUTH_KEY} || 'password';
 my $accept_type = 'application/json';
 my $article_reference_id = '12345';
-my $version = '2.2';
+my $version = $ENV{LYMBIX_API_VER} || '2.2';
 my $lymbix;
 
 subtest 'Init' => sub {
