@@ -4,10 +4,10 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-    NAME                => 'Lymbix::API',
+    NAME                => 'WebService::Lymbix',
     AUTHOR              => q{Omid Houshyar <ohoushyar@gmail.com>},
-    VERSION_FROM        => 'lib/Lymbix/API.pm',
-    ABSTRACT_FROM       => 'lib/Lymbix/API.pm',
+    VERSION_FROM        => 'lib/WebService/Lymbix.pm',
+    ABSTRACT_FROM       => 'lib/WebService/Lymbix.pm',
     ($ExtUtils::MakeMaker::VERSION >= 6.3002
       ? ('LICENSE'=> 'perl')
       : ()),
@@ -21,5 +21,5 @@ WriteMakefile(
         'Test::Most' => 0.25,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean               => { FILES => 'Lymbix-API-*' },
+    clean               => { FILES => 'WebService-Lymbix-*' },
 );

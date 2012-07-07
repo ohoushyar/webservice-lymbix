@@ -1,4 +1,4 @@
-package Lymbix::API;
+package WebService::Lymbix;
 
 use strict;
 use warnings;
@@ -15,7 +15,7 @@ use HTTP::Request;
 
 =head1 NAME
 
-Lymbix::API - API wrapper of Lymbix.
+WebService::Lymbix - API wrapper of Lymbix.
 
 =head1 VERSION
 
@@ -29,10 +29,10 @@ An API wrapper of Lymbix. See L<http://lymbix.com> for more details.
 
 Perhaps a little code snippet.
 
-    use Lymbix::API;
+    use WebService::Lymbix;
 
     my $auth_key = '<YOURAUTHKEY>';
-    my $lymbix = Lymbix::API->new($auth_key);
+    my $lymbix = WebService::Lymbix->new($auth_key);
     print $lymbix->tonalize("if you had to launch your business in two weeks, what would you cut")
     ...
 
@@ -209,8 +209,8 @@ Omid Houshyar, C<< <ohoushyar at gmail.com> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-lymbix-api at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Lymbix-API>.  I will be notified, and then you'll
+Please report any bugs or feature requests to C<bug-webservice-lymbix at rt.cpan.org>, or through
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WebService-Lymbix>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
 
@@ -220,7 +220,7 @@ automatically be notified of progress on your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc Lymbix::API
+    perldoc WebService::Lymbix
 
 
 You can also look for information at:
@@ -229,19 +229,19 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker (report bugs here)
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Lymbix-API>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=WebService-Lymbix>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/Lymbix-API>
+L<http://annocpan.org/dist/WebService-Lymbix>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/Lymbix-API>
+L<http://cpanratings.perl.org/d/WebService-Lymbix>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/Lymbix-API/>
+L<http://search.cpan.org/dist/WebService-Lymbix/>
 
 =back
 

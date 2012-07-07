@@ -1,13 +1,13 @@
 use Test::Most 0.25;
 
-use Lymbix::API;
+use WebService::Lymbix;
 
 eval {require JSON};
 plan (skip_all => "Required to have JSON::XS installed and LYMBIX_AUTH_KEY env variable set") unless $ENV{LYMBIX_AUTH_KEY} and not $@;
 
 use JSON;
 
-my $lymbix = Lymbix::API->new(
+my $lymbix = WebService::Lymbix->new(
     auth_key => $ENV{LYMBIX_AUTH_KEY},
     api_version => $ENV{LYMBIX_API_VER},
 );

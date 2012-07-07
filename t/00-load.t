@@ -3,7 +3,7 @@
 use Test::More tests => 1;
 
 BEGIN {
-    use_ok( 'Lymbix::API' ) || print "Bail out!\n";
+    use_ok( 'WebService::Lymbix' ) || print "Bail out!\n";
 }
 
-diag( "Testing Lymbix::API $Lymbix::API::VERSION, Perl $], $^X" );
+diag( "Testing WebService::Lymbix $WebService::Lymbix::VERSION, Perl $], $^X" );
