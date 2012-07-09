@@ -19,6 +19,7 @@ WriteMakefile(
         'LWP::UserAgent' => 6,
         'HTTP::Request' => 6,
         'Test::Most' => 0.25,
+        'JSON' => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'WebService-Lymbix-*' },
