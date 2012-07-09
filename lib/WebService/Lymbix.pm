@@ -209,44 +209,14 @@ Omid Houshyar, C<< <ohoushyar at gmail.com> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-webservice-lymbix at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WebService-Lymbix>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
 
-
-
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc WebService::Lymbix
-
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker (report bugs here)
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=WebService-Lymbix>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/WebService-Lymbix>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/WebService-Lymbix>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/WebService-Lymbix/>
-
-=back
+Please report any bugs or feature requests via GitHub bug tracker at
+L<http://github.com/ohoushyar/webservice-lymbix/issues>.
 
 
 =head1 ACKNOWLEDGEMENTS
+
+Pavel Shaydo for helping me to release this module.
 
 
 =head1 LICENSE AND COPYRIGHT
