@@ -1,4 +1,5 @@
 *~
+*.swp
 blib*
 blib/
 _build*
