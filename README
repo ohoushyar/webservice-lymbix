@@ -1,4 +1,4 @@
-Lymbix-API
+WebService-Lymbix
 
 API wrapper of Lymbix. Support API version 2.2 .
 See http://lymbix.com for more details.
@@ -17,21 +17,12 @@ SUPPORT AND DOCUMENTATION
 After installing, you can find documentation for this module with the
 perldoc command.
 
-    perldoc Lymbix::API
+    perldoc WebService::Lymbix
 
 You can also look for information at:
 
-    RT, CPAN's request tracker (report bugs here)
-        http://rt.cpan.org/NoAuth/Bugs.html?Dist=Lymbix-API
-
-    AnnoCPAN, Annotated CPAN documentation
-        http://annocpan.org/dist/Lymbix-API
-
-    CPAN Ratings
-        http://cpanratings.perl.org/d/Lymbix-API
-
-    Search CPAN
-        http://search.cpan.org/dist/Lymbix-API/
+    Please report any bugs or feature requests via GitHub bug tracker at
+    L<http://github.com/ohoushyar/webservice-lymbix/issues>.
 
 
 LICENSE AND COPYRIGHT
