@@ -3,7 +3,7 @@ package WebService::Lymbix;
 use strict;
 use warnings;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 $VERSION = eval $VERSION;
 
 use Carp;
@@ -19,7 +19,7 @@ WebService::Lymbix - API wrapper of Lymbix.
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
